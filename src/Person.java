@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Person {
     protected String socialSecurityNumber;
     protected String name;
@@ -28,7 +25,7 @@ public class Person {
     public String toString() {
         return
                 "Personnummer: " + socialSecurityNumber +
-                ", namn: " + name +
-                ", datum: " + date;
+                        ", namn: " + name +
+                        ", datum: " + date;
     }
 }

@@ -7,7 +7,7 @@ public class Main {
         Reception reception = new Reception();
         String pathToFile = "src/members.txt";
         String pathToPtFile = "src/PTfile.txt";
-        LocalDate today= LocalDate.now();
+        LocalDate today = LocalDate.now();
 
         int welcome = reception.getWelcomeMessageToStartLoop();
         while (welcome == 0) {

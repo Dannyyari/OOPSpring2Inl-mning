@@ -20,8 +20,8 @@ public class Reception {
         try {
             for (Person medlem : list) {
                 if (isMatchingMember(medlem, inputFromUser)) {
-                   String medlemsstatus= isPersonStillMember(medlem, currentDate,fileToWriteTo );
-                   return medlemsstatus;
+                    String medlemsstatus = isPersonStillMember(medlem, currentDate, fileToWriteTo);
+                    return medlemsstatus;
                 }
             }
 
@@ -37,6 +37,7 @@ public class Reception {
         getBeep();
         return inputFromUser + noAccesToGym;
     }
+
     //kollar att medlem finns.
     public boolean isMatchingMember(Person member, String inputFromUser) {
         return member.getName().equalsIgnoreCase(inputFromUser.trim()) ||
@@ -44,7 +45,7 @@ public class Reception {
     }
 
     public String isPersonStillMember(Person medlem, LocalDate currentDate, String pathToWritePT) {
-       final String notAMemberAnyMore = " är inte längre medlem! Det gick slut för ca ";
+        final String notAMemberAnyMore = " är inte längre medlem! Det gick slut för ca ";
         //tar in datum i strängform och konverterar till LocalDate.
         LocalDate lastPayment = LocalDate.parse(medlem.getDate());
         Long daysSinceLastPayment = ChronoUnit.DAYS.between(lastPayment, currentDate);
@@ -57,12 +58,12 @@ public class Reception {
             String notMember = medlem.name + notAMemberAnyMore + (daysSinceLastPayment / 30) + " månader sedan";
             getBeep();
             return notMember;
-        } else{
+        } else {
             //finare formatering på instämplingstid
             LocalDateTime todayAndTime = LocalDateTime.now();
             String todayTimeAndDate = todayAndTime.format(DateTimeFormatter.ofPattern("YYYY-MM-dd, HH:mm, "));
             String fileToWriteTo = pathToWritePT;
-            setToPTFile(medlem.getName()+  ", " + medlem.getSocialSecurityNumber() +" tränade: "+  todayTimeAndDate, fileToWriteTo);
+            setToPTFile(medlem.getName() + ", " + medlem.getSocialSecurityNumber() + " tränade: " + todayTimeAndDate, fileToWriteTo);
             String member = medlem.name + " är medlem, Välkommen!";
             return member;
         }
@@ -70,15 +71,15 @@ public class Reception {
 
     public void setToPTFile(String stringToPrint, String pathToFile) {
         String fileToWriteTo = pathToFile;
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter( fileToWriteTo, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToWriteTo, true))) {
             writer.write(stringToPrint);
             writer.newLine(); //Ny rad i utskrift
 
         } catch (InputMismatchException e) {
             System.out.println("fel i inmatning" + e.getMessage());
             e.printStackTrace();
-        }catch (FileNotFoundException e){
-            System.out.println("Fil ej funnen" +e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.out.println("Fil ej funnen" + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
             System.out.println("fel i filhantering" + e.getMessage());
