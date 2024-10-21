@@ -22,7 +22,7 @@ public class Main {
 
                     } else if (val == 1) {
                         System.out.println(reader.readOutPTfile(pathToPtFile));
-                        JOptionPane.showMessageDialog(null, "titta i konsolen");
+                        JOptionPane.showMessageDialog(null, "Titta i konsolen!");
                         System.exit(0);
                         break;
                     }

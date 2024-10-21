@@ -17,15 +17,14 @@ public class Reception {
         currentDate = LocalDate.now();
         String noAccesToGym = " är inte behörig, vem är du?!";
         String fileToWriteTo = "src/PTfile.txt";
-        List<Person> medlemmar = list;
-
         try {
-            for (Person medlem : medlemmar) {
+            for (Person medlem : list) {
                 if (isMatchingMember(medlem, inputFromUser)) {
                    String medlemsstatus= isPersonStillMember(medlem, currentDate,fileToWriteTo );
                    return medlemsstatus;
                 }
             }
+
         } catch (InputMismatchException e) {
             System.out.println("Fel inmatning" + e.getMessage());
             e.printStackTrace();
@@ -38,17 +37,18 @@ public class Reception {
         getBeep();
         return inputFromUser + noAccesToGym;
     }
+    //kollar att medlem finns.
     public boolean isMatchingMember(Person member, String inputFromUser) {
         return member.getName().equalsIgnoreCase(inputFromUser.trim()) ||
                 member.getSocialSecurityNumber().equalsIgnoreCase(inputFromUser.trim());
     }
+
     public String isPersonStillMember(Person medlem, LocalDate currentDate, String pathToWritePT) {
        final String notAMemberAnyMore = " är inte längre medlem! Det gick slut för ca ";
-        String path= pathToWritePT;
-
         //tar in datum i strängform och konverterar till LocalDate.
         LocalDate lastPayment = LocalDate.parse(medlem.getDate());
         Long daysSinceLastPayment = ChronoUnit.DAYS.between(lastPayment, currentDate);
+
 
         //om medlem inte har betalat på mer än 1 år
         if (daysSinceLastPayment > 365) {
@@ -62,19 +62,17 @@ public class Reception {
             LocalDateTime todayAndTime = LocalDateTime.now();
             String todayTimeAndDate = todayAndTime.format(DateTimeFormatter.ofPattern("YYYY-MM-dd, HH:mm, "));
             String fileToWriteTo = pathToWritePT;
-            setToPTFile(medlem.getName()+  ", " + medlem.getSocialSecurityNumber(), todayTimeAndDate, fileToWriteTo);
-           // setToPTFile(medlem.name + ", " + medlem.socialSecurityNumber, todayTimeAndDate, fileToWriteTo);
+            setToPTFile(medlem.getName()+  ", " + medlem.getSocialSecurityNumber() +" tränade: "+  todayTimeAndDate, fileToWriteTo);
             String member = medlem.name + " är medlem, Välkommen!";
             return member;
         }
     }
 
-    public void setToPTFile(String stringToPrint, String dateAndTime, String pathToFile) {
+    public void setToPTFile(String stringToPrint, String pathToFile) {
         String fileToWriteTo = pathToFile;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter( fileToWriteTo, true))) {
-            writer.write(stringToPrint +" tränade: " +  dateAndTime);
+            writer.write(stringToPrint);
             writer.newLine(); //Ny rad i utskrift
-
 
         } catch (InputMismatchException e) {
             System.out.println("fel i inmatning" + e.getMessage());
@@ -111,10 +109,10 @@ public class Reception {
         } catch (InputMismatchException e) {
             System.out.println("Fel i menyval");
             e.printStackTrace();
-            System.exit(0);
+            return -1;
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(0);
+            return -1;
         }
         return exit;
     }
@@ -144,21 +142,3 @@ public class Reception {
         return exit;
     }
 }
-/*
-LocalDate lastPayment = LocalDate.parse(medlem.getDate());
-                Long daysSinceLastPayment = ChronoUnit.DAYS.between(lastPayment, currentDate);
-
-                if (isMatchingMember(medlem, inputFromUser)) {
-
-                    if (daysSinceLastPayment > 365) {
-                        String ejMedlem = medlem.name + notAMemberAnyMore + daysSinceLastPayment / 30 + " månader sedan";
-                        getBeep();
-                        return ejMedlem;
-                    }
-                    if (daysSinceLastPayment <= 365) {
-                        String fileToWriteTo = "src/PTfile.txt";
-                        setToPTFile(medlem.name + ", " + medlem.socialSecurityNumber + " " + todayTimeAndDate, fileToWriteTo);
-                        String godkänd = medlem.name + " är medlem, Välkommen!";
-                        return godkänd;
-                    }
- */

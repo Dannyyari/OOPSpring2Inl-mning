@@ -6,17 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentReader {
-    //DETTA SKA RETURNA EN PERSON LIST DIREKT
-    //mata in allt från min getPerson i personklassen!!!
-
      public List<Person> getFile(String path){
          List <Person>personList= new ArrayList<>();
          String temp="";
          String temp2="";
+
+         //tar in fil och gör till en rad
         try (BufferedReader buf= new BufferedReader(new java.io.FileReader(path))){
             while ((temp=buf.readLine())!=null){
-                temp2=buf.readLine();
-                String enrad=temp +", "+ temp2;
+                temp2=buf.readLine().trim();
+                String enrad=temp.trim() +", "+ temp2.trim();
                 String[] strArray= enrad.split(", ");
                 personList.add(new Person(strArray[0], strArray[1], strArray[2]));
             }
@@ -36,6 +35,7 @@ public class DocumentReader {
         String printer="";
         String temp;
         try (BufferedReader reader=new BufferedReader(new FileReader(pathToFile))) {
+            System.out.println("lista på medlemmar som tränat");
             while ((temp=reader.readLine()) !=null){
                 if (!temp.trim().isBlank()) {
                     printer+=temp +"\n"; //lägger till ny rad för snyggare utskrift
