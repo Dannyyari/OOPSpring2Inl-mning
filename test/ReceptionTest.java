@@ -61,6 +61,8 @@ public class ReceptionTest {
         }
     }
 
+    //kontrollerara att datat hanteras rätt, vi använder oss av ett fast datum
+    //fakedate== 2024-10-18
     @Test
     public void isPersonStilMemberTest() {
         // Skapar en person som nyligen har betalat
