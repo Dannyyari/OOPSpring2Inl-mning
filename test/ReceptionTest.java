@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -8,10 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ReceptionTest {
     Reception reception = new Reception();
     LocalDateTime specificTest = LocalDateTime.of(2024, Month.OCTOBER, 18, 10, 30);
+    LocalDate fakeDate = LocalDate.of(2024, Month.OCTOBER, 18);
     String fakeTodayTimeAndDate = specificTest.format(DateTimeFormatter.ofPattern("YYYY-MM-dd, HH:mm"));
     String PTfileTest = "test/PTFileTest.txt";
 
@@ -57,4 +60,18 @@ public class ReceptionTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void isPersonStilMemberTest() {
+        // Skapar en person som nyligen har betalat
+        Person member = new Person("7703021234", "Kasto Gabriel", "2024-07-01");
+        String result = reception.isPersonStillMember(member, fakeDate, "mochpath.txt");
+
+        assertEquals("Kasto Gabriel är medlem, Välkommen!", result);
+
+        Person member2 = new Person("8204021234", "Hamra Ali", "2019-12-02");
+        String resaultFalse = reception.isPersonStillMember(member2, fakeDate, "mockPath.txt");
+        assertTrue(resaultFalse.contains("Hamra Ali är inte längre medlem"));
+    }
 }
+
